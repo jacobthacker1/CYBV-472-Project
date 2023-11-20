@@ -10,6 +10,12 @@ void vulnerableFunctionA(char a) {
     }
 }
 
+void vulnerableCommandExecution(char* input) {
+    char command[350];
+    snprintf(command, sizeof(command), "echo %s", input);
+    system(command);
+}
+
 int main(int argc, char **argv) {
     char *fgets_ret;
     char input_buffer[300] = {0};
@@ -26,7 +32,8 @@ int main(int argc, char **argv) {
                 vulnerableFunctionA(input_buffer[2] - '0');
                 break;
             case '1':
-                // Option 1 code here
+                printf("\n[*] %c: calling vulnerableCommandExecution()\n", c);
+                vulnerableCommandExecution(input_buffer + 2);
                 break;
             case '2':
                 // Option 2 code here
