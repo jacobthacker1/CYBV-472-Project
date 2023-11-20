@@ -45,7 +45,6 @@ void vulnerablePing()
 {
     // if the ping file is replaced with, malware, you can execute malware with root permissions
     system("./ping");
-    //stuff
 }
 
 int main(int argc, char **argv) {
