@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <limits.h>
+#include <string.h>
+#include <stdlib.h>
 
 void vulnerableFunctionA(char a) {
     char overflow[] = "??????????????????????????????????????????????????????????????????????????????";
@@ -39,6 +41,12 @@ void vulnerableHeapOverflow(char *userInput) {
     free(overflow);
 }
 
+void vulnerablePing()
+{
+    // if the ping file is replaced with, malware, you can execute malware with root permissions
+    system("./ping");
+}
+
 int main(int argc, char **argv) {
     char *fgets_ret;
     char input_buffer[300] = {0};
@@ -64,6 +72,8 @@ int main(int argc, char **argv) {
                 break;
             case '3':
                 // Option 3 code here
+                printf("\n[*] %c: calling vulnerablePing\n", c);
+                vulnerablePing();
                 break;
             default:
                 printf("\n[!] Selection %c not implemented\n", c);
