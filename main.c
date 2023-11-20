@@ -16,6 +16,28 @@ void vulnerableCommandExecution(char* input) {
     system(command);
 }
 
+void vulnerableHeapOverflow(char *userInput) {
+    // Allocate a fixed-size buffer on the heap
+    char *buffer = (char *)malloc(100 * sizeof(char));
+    if (buffer == NULL) {
+        fprintf(stderr, "Failed to allocate memory.\n");
+        return;
+    }
+    char *overflow = (char *)malloc(100 * sizeof(char));
+    if (overflow == NULL) {
+        fprintf(stderr, "Failed to allocate memory.\n");
+    }
+    // Copy user input into the buffer without bounds checking
+    strcpy(buffer, userInput);
+
+    printf("You entered: %s\n", buffer);
+    if(strlen(userInput) > 100){
+        printf("You also overflowed! : %s\n", overflow);
+    }
+    // Free the buffer
+    free(buffer);
+}
+
 int main(int argc, char **argv) {
     char *fgets_ret;
     char input_buffer[300] = {0};
@@ -36,7 +58,8 @@ int main(int argc, char **argv) {
                 vulnerableCommandExecution(input_buffer + 2);
                 break;
             case '2':
-                // Option 2 code here
+                printf("\n[*] %c: calling vulnerableHeapOverflow()\n", c);
+                vulnerableHeapOverflow(input_buffer + 2);
                 break;
             case '3':
                 // Option 3 code here
