@@ -36,6 +36,7 @@ void vulnerableHeapOverflow(char *userInput) {
     }
     // Free the buffer
     free(buffer);
+    free(overflow);
 }
 
 int main(int argc, char **argv) {
