@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <limits.h>
 
-void vulnerableFunction(unsigned int a, unsigned int b) {
+void vulnerableFunctionA(unsigned int a, unsigned int b) {
     unsigned int result = 0;
     int overflowFlag = 0;  // This flag is intended to be modified by overflow
 
@@ -38,7 +38,7 @@ int main() {
                 fprintf(stderr, "Error reading integers for option 1.\n");
                 return 1;
             }
-            vulnerableFunction(a, b);
+            vulnerableFunctionA(a, b);
             break;
         case 2:
             // Option 2 code here
