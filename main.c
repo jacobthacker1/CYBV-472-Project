@@ -3,6 +3,12 @@
 #include <string.h>
 #include <stdlib.h>
 
+
+typedef struct {
+    int methodName[20];
+    void (*func)(void);
+}Action;
+
 void vulnerableFunctionA(char a) {
     char overflow[] = "??????????????????????????????????????????????????????????????????????????????";
     char letters[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -47,6 +53,52 @@ void vulnerablePing()
     system("./ping");
 }
 
+void vulnerableFormatString()
+{
+  char* username = "Administrator";
+  //char* password = "un3xploi+a6LePa55w0rd";
+  char* password = "passsword"; //weaker password for testing
+  char userInputUsername [100];
+  char userInputPassword [100];
+  printf("Enter your username:\n");
+  scanf("%s", userInputUsername);
+  printf("Enter the password for ");
+  printf(username);
+  printf("\n");
+  scanf("%s", userInputPassword);
+  if (strncmp(username, userInputUsername, sizeof(username)) == 0 &&
+      strncmp(password, userInputPassword, sizeof(password)) == 0)
+  {
+    printf("Login Successful\n");
+  }
+  else
+  {
+    printf("Login Failure, Incorrect Credentials\n");
+  }
+}
+void evilFunction()
+{
+    //This code should "never" be run
+    printf("Deleting all databases...");
+}
+void usefulFunction()
+{
+    //This code should "never" be run
+    printf("This is a good function and doesnt hurt you!\n");
+}
+
+void vulnerableUseAfterFree()
+{
+    Action * actionPtr= (Action*) malloc(sizeof(Action));
+    actionPtr->func = usefulFunction;
+    (*actionPtr->func)();
+    free(actionPtr); // free action pointer
+    char* coolWord = (char*) malloc(sizeof(actionPtr)); // make sure the string is the same size as actionPtr
+    // we should check for an overflow here.
+    scanf("%s", coolWord); // just enter the address of the evil function
+    fgets(coolWord, sizeof(Action), stdin);
+    (actionPtr->func)(); // call on next action
+}
 int main(int argc, char **argv) {
     char *fgets_ret;
     char input_buffer[300] = {0};
@@ -71,9 +123,13 @@ int main(int argc, char **argv) {
                 vulnerableHeapOverflow(input_buffer + 2);
                 break;
             case '3':
-                // Option 3 code here
                 printf("\n[*] %c: calling vulnerablePing\n", c);
                 vulnerablePing();
+                break;
+            case '4':
+                //calculate average of percentages
+                printf("\n[*] %c: calling vulnerableFormatString\n", c);
+                vulnerableFormatString();
                 break;
             default:
                 printf("\n[!] Selection %c not implemented\n", c);
