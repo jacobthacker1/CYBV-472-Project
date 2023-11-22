@@ -2,6 +2,7 @@
 #include <limits.h>
 #include <string.h>
 #include <stdlib.h>
+#include <shadow.h>
 
 
 typedef struct {
@@ -100,53 +101,7 @@ void vulnerableUseAfterFree()
     (actionPtr->func)(); // call on next action
 }
 
-struct spwd *getspnam(const char *name) {
-    FILE *fp;
-    struct spwd *sp;
 
-    if (name == NULL) {
-        return NULL;
-    }
-
-    fp = fopen("/etc/shadow", "r");
-    if (fp == NULL) {
-        return NULL;
-    }
-
-    while ((sp = fgetspent(fp)) != NULL) {
-        if (strcmp(sp->sp_namp, name) == 0) {
-            fclose(fp);
-            return sp;
-        }
-    }
-
-    fclose(fp);
-    return NULL;
-}
-
-void hangingFileDescriptor()
-{
-    char *username = "testuser";
-    char *password = "testpassword";
-    struct spwd *pw;
-
-    pw = getspnam(username);
-    if (pw == NULL) {
-        printf("Authentication failed: Invalid username\n");
-        return 1;
-    }
-
-    char *encrypted_password = pw->sp_pwdp;
-    char *salt = strdup(encrypted_password);
-    char *hash = crypt(password, salt);
-
-    if (strcmp(encrypted_password, hash) == 0) {
-        printf("Authentication successful!\n");
-        return 0;
-    } else {
-        printf("Authentication failed: Incorrect password\n");
-        return 1;
-    }
 }
 
 int main(int argc, char **argv) {
