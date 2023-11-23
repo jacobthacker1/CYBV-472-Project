@@ -6,7 +6,7 @@
 
 
 typedef struct {
-    int methodName[20];
+    char methodName[20];
     void (*func)(void);
 }Action;
 
@@ -85,24 +85,26 @@ void evilFunction()
 void usefulFunction()
 {
     //This code should be run
-    printf("This is a good function and doesnt hurt you!\n");
+    printf("This is a good function and doesnt hurt you: ");
 }
 
 void vulnerableUseAfterFree()
 {
+    // The idea is we overflow with a string, add a pointer to the function address "evilFunction()"
+
     Action * actionPtr= (Action*) malloc(sizeof(Action));
     actionPtr->func = usefulFunction;
     (*actionPtr->func)();
     free(actionPtr); // free action pointer
-    char* coolWord = (char*) malloc(sizeof(actionPtr)); // make sure the string is the same size as actionPtr
+    char* coolWord = (char*) malloc(sizeof(Action)); // make sure the string is the same size as actionPtr
     // we should check for an overflow here.
-    scanf("%s", coolWord); // just enter the address of the evil function
+    //scanf("%s", coolWord); // just enter the address of the evil function
     fgets(coolWord, sizeof(Action), stdin);
-    (actionPtr->func)(); // call on next action
+    strcpy(actionPtr->methodName, coolWord);
+    (*actionPtr->func)(); // call on next action
 }
 
 
-}
 
 int main(int argc, char **argv) {
     char *fgets_ret;
@@ -135,6 +137,10 @@ int main(int argc, char **argv) {
                 //calculate average of percentages
                 printf("\n[*] %c: calling vulnerableFormatString\n", c);
                 vulnerableFormatString();
+                break;
+            case '5':
+                printf("\n[*] %c: calling vulnerableUseAfterFree\n", c);
+                vulnerableUseAfterFree();
                 break;
             default:
                 printf("\n[!] Selection %c not implemented\n", c);
