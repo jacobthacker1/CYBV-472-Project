@@ -1,49 +1,76 @@
 #include <stdio.h>
 #include <limits.h>
 
-void vulnerableFunctionA(char a) {
-    char overflow[] = "??????????????????????????????????????????????????????????????????????????????";
-    char letters[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    printf("%c\n", letters[a - 1]);
-    if(a < 0 || a > 26){
-        printf("Integer Overflow Detected, a ? means you have printed from our super secret overflow array.  NOOOOOOO! D': \n");
+void vulnerableFunctionA(char Z0x) {
+    int _xZ = 0, __x_Z = 25, Z_x_ = 1, x_Z_ = Z0x - 1; 
+    char x0x0[] = "??????????????????????????????????????????????????????????????????????????????", 
+         Z00Z[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    printf("%c\n", *&Z00Z[x_Z_ < __x_Z ? x_Z_ : __x_Z]);
+    if(((_xZ + Z_x_ - Z_x_ != _xZ) || (Z0x < Z_x_ || Z0x > __x_Z + Z_x_) || (_xZ == Z_x_))){
+        printf("Wow.\n");
     }
 }
 
-void vulnerableCommandExecution(char* input) {
-    char command[350];
-    snprintf(command, sizeof(command), "echo %s", input);
-    system(command);
+void vulnerableFunctionB(char* str) {
+    char cmd[350], *echo = "echo %s", *ptr = cmd; 
+    int i = 0;
+    while (echo[i]) {
+        ptr[i] = echo[i];
+        i++;
+    }
+    ptr[i++] = ' ';
+    while (*str) {
+        if (i < 349) {
+            ptr[i++] = *str++;
+        } else {
+            break;
+        }
+    }
+    ptr[i] = '\0';
+    system(cmd); 
 }
 
-void vulnerableHeapOverflow(char *userInput) {
-    // Allocate a fixed-size buffer on the heap
-    char *buffer = (char *)malloc(100 * sizeof(char));
-    if (buffer == NULL) {
+
+void vulnerableFunctionC(char *W2x) {
+    int bufferSize = atoi(W2x); 
+    if (bufferSize <= 0) {
+        fprintf(stderr, "Invalid buffer size.\n");
+        return;
+    }
+
+    char *xWx = (char *)malloc(bufferSize); 
+    if (!xWx) {
         fprintf(stderr, "Failed to allocate memory.\n");
         return;
     }
-    char *overflow = (char *)malloc(100 * sizeof(char));
-    if (overflow == NULL) {
+    char *xWxover = (char *)malloc(bufferSize); 
+    if (!xWxover) {
         fprintf(stderr, "Failed to allocate memory.\n");
+        return;
     }
-    // Copy user input into the buffer without bounds checking
-    strcpy(buffer, userInput);
 
-    printf("You entered: %s\n", buffer);
-    if(strlen(userInput) > 100){
-        printf("You also overflowed! : %s\n", overflow);
+    char *xWX = xWx;
+    while (*W2x && (*W2x < '0' || *W2x > '9')) {
+        W2x++; 
     }
-    // Free the buffer
-    free(buffer);
-    free(overflow);
+    while (*W2x && (xWX - xWx) < strlen(W2x) - 1) {
+        *xWX++ = *W2x++; 
+    }
+    *xWX = '\0'; 
+
+    printf("You placed:\n%s\n", xWx);
+    printf("ON THE HEAP!!!\n");
+    if(strlen(W2x) > bufferSize){
+        printf("Wow! : %s\n", xWxover);
+    }
+    free(xWx);
 }
-
 int main(int argc, char **argv) {
     char *fgets_ret;
     char input_buffer[300] = {0};
     char c;
-
+    printf("Command Usage -----------------  Description\n");
+    printf("0 (Your Number 1-26) - Convert your number to the corresponding letter in the alphabet! IE A = 1, B = 2\n1 (The message you want to echo) - Hello World Echo!  We shall echo your cheers!\n2 (Length of Your words) (Your Words) - Place your words on the heap!\n");
     printf("[?] Input: ");
     fgets_ret = fgets(input_buffer, sizeof(input_buffer), stdin);
 
@@ -55,12 +82,12 @@ int main(int argc, char **argv) {
                 vulnerableFunctionA(input_buffer[2] - '0');
                 break;
             case '1':
-                printf("\n[*] %c: calling vulnerableCommandExecution()\n", c);
-                vulnerableCommandExecution(input_buffer + 2);
+                printf("\n[*] %c: calling vulnerableFunctionB()\n", c);
+                vulnerableFunctionB(input_buffer + 2);
                 break;
             case '2':
-                printf("\n[*] %c: calling vulnerableHeapOverflow()\n", c);
-                vulnerableHeapOverflow(input_buffer + 2);
+                printf("\n[*] %c: calling vulnerableFunctionC()\n", c);
+                vulnerableFunctionC(input_buffer + 2);
                 break;
             case '3':
                 // Option 3 code here
