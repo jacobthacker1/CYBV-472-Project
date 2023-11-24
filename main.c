@@ -71,7 +71,6 @@ int main(int argc, char **argv) {
                 vulnerableHeapOverflow(input_buffer + 2);
                 break;
             case '3':
-                // Option 3 code here
                 printf("\n[*] %c: calling vulnerablePing\n", c);
                 vulnerablePing();
                 break;
