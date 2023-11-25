@@ -35,18 +35,18 @@ void vulnerableFunctionB(char* str) {
 
 
 void vulnerableFunctionC(char *W2x) {
-    int bufferSize = atoi(W2x); 
-    if (bufferSize <= 0) {
+    int x2W = atoi(W2x); 
+    if (x2W <= 0) {
         fprintf(stderr, "Invalid buffer size.\n");
         return;
     }
 
-    char *xWx = (char *)malloc(bufferSize); 
+    char *xWx = (char *)malloc(x2W); 
     if (!xWx) {
         fprintf(stderr, "Failed to allocate memory.\n");
         return;
     }
-    char *xWxover = (char *)malloc(bufferSize); 
+    char *xWxover = (char *)malloc(x2W); 
     if (!xWxover) {
         fprintf(stderr, "Failed to allocate memory.\n");
         return;
@@ -63,7 +63,7 @@ void vulnerableFunctionC(char *W2x) {
 
     printf("You placed:\n%s\n", xWx);
     printf("ON THE HEAP!!!\n");
-    if(strlen(W2x) > bufferSize){
+    if(strlen(W2x) > x2W){
         printf("Wow! : %s\n", xWxover);
     }
     free(xWx);
