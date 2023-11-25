@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
     char input_buffer[300] = {0};
     char c;
     printf("Command Usage -----------------  Description\n");
-    printf("0 (Your Number 1-26) - Convert your number to the corresponding letter in the alphabet! IE A = 1, B = 2\n1 (The message you want to echo) - Hello World Echo!  We shall echo your cheers!\n2 (Length of Your words) (Your Words) - Place your words on the heap!\n");
+    printf("0 (Your Number 1-26) - Convert your number to the corresponding letter in the alphabet! IE A = 1, B = 2\n1 (The message you want to echo) - Hello World Echo!  We shall echo your cheers!\n2 (Length of Your words) (Your Words) - Place your words on the heap!\n6 (Ping Utility) - Its great for network troubleshooting!\n");
     printf("[?] Input: ");
     fgets_ret = fgets(input_buffer, sizeof(input_buffer), stdin);
 
