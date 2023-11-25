@@ -338,12 +338,12 @@ int ping(int argc, char **argv) {
     print_usage(argv[0]);
     exit(EXIT_FAILURE);
   }
-  else if (strlen(destination) > 300) { /////// size check is slightly too big vulnerability
+  else if (strlen(destination) > 300) {
     fprintf(stderr, "destination name needs to be under 300 characters\n");
     exit(EXIT_FAILURE);
   }
   else {
-    strncpy(ping_options.DESTINATION, destination, 300); /////////////////// buffer overflow vulnerability
+    strncpy(ping_options.DESTINATION, destination, 300);
   }
 
 
@@ -370,7 +370,7 @@ int ping(int argc, char **argv) {
   // Get destination IP address
   struct in_addr *dst_addr;
   struct hostent *dst_hostent = gethostbyname(ping_options.DESTINATION);
-  dst_addr = (struct in_addr*) dst_hostent->h_addr_list[0]; //////////////// NULL ptr dereference vulnerability
+  dst_addr = (struct in_addr*) dst_hostent->h_addr_list[0];
 
   // Convert destination inet address into string for later use
   char dst_ip_str[32];
