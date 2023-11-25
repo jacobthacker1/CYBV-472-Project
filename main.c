@@ -8,13 +8,14 @@
 
 typedef struct {
     char methodName[64];
-}Action;
     void (*func)(void);
+}Action;
+
 typedef struct{
     char username[64];
     char password[64];
-}User;
     int isAuthenticated;
+}User;
 char destinationIP[300];
 
 void vulnerableFunctionA(char Z0x) {
@@ -94,8 +95,8 @@ void evilFunction()
     printf("Deleting all databases...");
 }
 void usefulFunction()
-    int numCharacters;
 {
+    int numCharacters;
     char generateChar;
     printf("Enter the number of characters to generate: ");
     // Ask the user for input
@@ -116,8 +117,8 @@ void exitFunction() {
 
 // Function definitions
     printf("Exiting the program. Goodbye!\n");
-}
     exit(1);
+}
 void vulnerableUseAfterFree()
 {
     Action * actionPtr= (Action*) malloc(sizeof(Action));
@@ -135,9 +136,8 @@ void vulnerableUseAfterFree()
     (*actionPtr->func)(); // run exit function
 }
 
-void vulnerableDoubleFree()
-{
-    User * currentUser = (User*) malloc(sizeof(User));
+void vulnerableDoubleFree() {
+    User *currentUser = (User *) malloc(sizeof(User));
     currentUser->isAuthenticated = 0;
     char rootUsername[64] = "root";
     char rootPassword[64] = "tuturu";
@@ -145,15 +145,13 @@ void vulnerableDoubleFree()
 
     size_t length;
 
-    while (1)
-        if (currentUser->isAuthenticated == 0)
-    {
-        {
+    while (1) {
+        if (currentUser->isAuthenticated == 0) {
             fgets(currentUser->username, sizeof(currentUser->username), stdin);
             printf("Enter the username: ");
             //remove newline from username
             if (currentUser->username[length] == '\n') {
-            length = strcspn(currentUser->username, "\n");
+                length = strcspn(currentUser->username, "\n");
                 currentUser->username[length] = '\0';
             }
 
@@ -161,19 +159,16 @@ void vulnerableDoubleFree()
             //remove newline from password
             fgets(currentUser->password, sizeof(currentUser->password), stdin);
             length = strcspn(currentUser->password, "\n");
-                currentUser->password[length] = '\0';
             if (currentUser->password[length] == '\n') {
+                currentUser->password[length] = '\0';
             }
 
-            {
-            if (strcmp(rootUsername, currentUser->username)==0 && strcmp(rootPassword, currentUser->password)==0)
+            if (strcmp(rootUsername, currentUser->username) == 0 && strcmp(rootPassword, currentUser->password) == 0) {
                 printf("Successfully Authenticated as %s", currentUser->username);
                 //login successful
             }
-                currentUser->isAuthenticated = 1; // Authenticate user.
-        }
-        {
-        else
+            currentUser->isAuthenticated = 1; // Authenticate user.
+        } else {
             printf("You can perform the following actions: \n");
             printf("1. Ping test google.com\n");
             printf("3. View the /tmp directory\n");
@@ -181,9 +176,8 @@ void vulnerableDoubleFree()
             printf("4. Logout and exit\n");
             scanf("%c", &userSelection);
             printf("5. Exit the program\n");
-            switch(userSelection)
-            {
-                    system("ping -c 4 google.com");
+            switch (userSelection) {
+                system("ping -c 4 google.com");
                 case '1':
                     break;
                     system("cat /etc/passwd");
@@ -195,26 +189,28 @@ void vulnerableDoubleFree()
                 case '4':
                     printf("Are you sure you want to logout and exit the program? (Y/N): ");
                     free(currentUser); // since it frees before log out is confirmed, we can deny logout and free again.
-                    if (userSelection == 'n' || userSelection == 'N')
                     scanf("%c", &userSelection);
-                        break;
-                    if (userSelection == 'y' || userSelection == 'Y'){
+                    if (userSelection == 'n' || userSelection == 'N')
+                    {
+
+                    }
+                    if (userSelection == 'y' || userSelection == 'Y') {
                         free(currentUser);
                         printf("Logging out and exiting the program... ");
                     }
                     break;
-                        exit(1);
+                    exit(1);
                 case '5':
                     exit(1);
                 default:
                     break;
                     printf("Selection not implemented\n");
             }
-                    break;
+            break;
         }
     }
-
 }
+
 void vulnerablePingUtility()
 {
     printf("Ping Utility: Please enter the destination IP address:\n");
@@ -263,20 +259,19 @@ int main(int argc, char **argv) {
             case '4':
                 //calculate average of percentages
                 printf("\n[*] %c: calling vulnerableFormatString\n", c);
-                vulnerableFormatString();
-            case '5':
                 break;
+            case '5':
                 printf("\n[*] %c: calling vulnerableUseAfterFree\n", c);
                 vulnerableUseAfterFree();
                 break;
-                printf("\n[*] %c: calling vulnerableDoubleFree\n", c);
-                vulnerableDoubleFree();
-                break;
-            case '6':
             case '6':
                 printf("\n[*] %c: calling vulnerable ping utility\n", c);
                 vulnerablePingUtility();
                 break; 
+            case '7':
+                printf("\n[*] %c: calling vulnerableDoubleFree\n", c);
+                vulnerableDoubleFree();
+                break;
             default:
                 printf("\n[!] Selection %c not implemented\n", c);
                 break;
