@@ -129,3 +129,5 @@ int main(int argc, char **argv) {
 
     return 0;
 }
+
+// 9 vulnerabilities have been officially inserted into this program. Happy hunting ;)
