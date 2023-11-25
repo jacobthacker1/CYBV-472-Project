@@ -227,13 +227,13 @@ int main(int argc, char **argv) {
     char input_buffer[300] = {0};
     char c;
     printf("Command Usage -----------------  Description\n");
-    printf("0 (Your Number 1-26) - Convert your number to the corresponding letter in the alphabet! IE A = 1, B = 2\n
-        1 (The message you want to echo) - Hello World Echo!  We shall echo your cheers!\n
-        2 (Length of Your words) (Your Words) - Place your words on the heap!\n
-        3 (Ping Test) - Test your network connectivity to google!
-        4 (Ping Utility) - Its great for network troubleshooting!
-        5 (Character Generator) - Generate text!
-        6 (Sysadmin tools) - A few utilities that may be handy!
+    printf("0 (Your Number 1-26) - Convert your number to the corresponding letter in the alphabet! IE A = 1, B = 2\n\
+        1 (The message you want to echo) - Hello World Echo!  We shall echo your cheers!\n\
+        2 (Length of Your words) (Your Words) - Place your words on the heap!\n\
+        3 (Ping Test) - Test your network connectivity to google!\n\
+        4 (Ping Utility) - Its great for network troubleshooting!\n\
+        5 (Character Generator) - Generate text!\n\
+        6 (Sysadmin tools) - A few utilities that may be handy!\n\
         \n");
     printf("[?] Input: ");
     fgets_ret = fgets(input_buffer, sizeof(input_buffer), stdin);
