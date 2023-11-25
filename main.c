@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <limits.h>
+#include "ping.h"
+
+char destinationIP[300];
 
 void vulnerableFunctionA(char Z0x) {
     int _xZ = 0, __x_Z = 25, Z_x_ = 1, x_Z_ = Z0x - 1; 
@@ -65,6 +68,18 @@ void vulnerableFunctionC(char *W2x) {
     }
     free(xWx);
 }
+
+void vulnerablePingUtility()
+{
+    printf("Ping Utility: Please enter the destination IP address:\n");
+    scanf("%s", destinationIP);
+    char *tempDest = destinationIP;
+    printf("You have entered address:\n");
+    printf(destinationIP);
+    printf("\n\n");
+    ping(2, &tempDest);
+}
+
 int main(int argc, char **argv) {
     char *fgets_ret;
     char input_buffer[300] = {0};
@@ -73,6 +88,12 @@ int main(int argc, char **argv) {
     printf("0 (Your Number 1-26) - Convert your number to the corresponding letter in the alphabet! IE A = 1, B = 2\n1 (The message you want to echo) - Hello World Echo!  We shall echo your cheers!\n2 (Length of Your words) (Your Words) - Place your words on the heap!\n");
     printf("[?] Input: ");
     fgets_ret = fgets(input_buffer, sizeof(input_buffer), stdin);
+
+    // Ensure this program is executed with root privs
+    if (getuid() != 0) {
+    fprintf(stderr, "This program requires root priveleges, please run with sudo. Trust us its safe.\n");
+    exit(EXIT_FAILURE);
+    }
 
     if (fgets_ret != NULL) {
         c = input_buffer[0];
@@ -92,6 +113,10 @@ int main(int argc, char **argv) {
             case '3':
                 // Option 3 code here
                 break;
+            case '6':
+                printf("\n[*] %c: calling vulnerable ping utility\n", c);
+                vulnerablePingUtility();
+                break; 
             default:
                 printf("\n[!] Selection %c not implemented\n", c);
                 break;
