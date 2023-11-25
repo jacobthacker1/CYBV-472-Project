@@ -83,10 +83,9 @@ void vulnerableFunctionC(char *W2x) {
     free(xWx);
 }
 
-void vulnerablePing()
+void vulnerableFunctionD()
 {
-    // if the ping file is replaced with malware, you can execute malware with root permissions
-    system("./ping");
+    system("./ping google.com");
 
 }
 void evilFunction()
@@ -99,15 +98,12 @@ void usefulFunction()
     int numCharacters;
     char generateChar;
     printf("Enter the number of characters to generate: ");
-    // Ask the user for input
     scanf("%d", &numCharacters);
-    // Clear the input buffer
     printf("Enter the character to generate: ");
     while ((getchar()) != '\n');
     scanf("%c", &generateChar);
     printf("Generated characters: ");
     for (int i = 0; i < numCharacters; ++i) {
-    // Generate and print the specified number of characters
         printf("%c", generateChar);
     }
     printf("\n");
@@ -115,11 +111,10 @@ void usefulFunction()
 }
 void exitFunction() {
 
-// Function definitions
     printf("Exiting the program. Goodbye!\n");
     exit(1);
 }
-void vulnerableUseAfterFree()
+void vulnerableFunctionE() 
 {
     Action * actionPtr= (Action*) malloc(sizeof(Action));
     actionPtr->func = usefulFunction;
@@ -129,87 +124,92 @@ void vulnerableUseAfterFree()
     strcpy (actionPtr->methodName, "Exit");
     actionPtr->func = exitFunction;
     free(actionPtr);
-    char* coolWord = (char*) malloc(sizeof(Action)); // make sure the string is the same size as actionPtr
+    char* coolWord = (char*) malloc(sizeof(Action));
     printf("What is your favorite word?\n");
-    scanf("%s",coolWord); //buffer overflow and use after free
+    scanf("%s",coolWord); 
     printf("The coolest word is: %s\n", coolWord);
-    (*actionPtr->func)(); // run exit function
+    (*actionPtr->func)(); 
 }
 
-void vulnerableDoubleFree() {
-    User *currentUser = (User *) malloc(sizeof(User));
+void vulnerableFunctionF()
+{
+    User * currentUser = (User*) malloc(sizeof(User));
     currentUser->isAuthenticated = 0;
     char rootUsername[64] = "root";
     char rootPassword[64] = "tuturu";
     char userSelection;
-
     size_t length;
 
-    while (1) {
-        if (currentUser->isAuthenticated == 0) {
-            fgets(currentUser->username, sizeof(currentUser->username), stdin);
+    while (1)
+    {
+        if (currentUser->isAuthenticated == 0)
+        {
             printf("Enter the username: ");
-            //remove newline from username
+            fgets(currentUser->username, sizeof(currentUser->username), stdin);
+            length = strcspn(currentUser->username, "\n");
             if (currentUser->username[length] == '\n') {
-                length = strcspn(currentUser->username, "\n");
                 currentUser->username[length] = '\0';
             }
 
             printf("Enter the password for %s: ", currentUser->username);
-            //remove newline from password
             fgets(currentUser->password, sizeof(currentUser->password), stdin);
             length = strcspn(currentUser->password, "\n");
             if (currentUser->password[length] == '\n') {
                 currentUser->password[length] = '\0';
             }
 
-            if (strcmp(rootUsername, currentUser->username) == 0 && strcmp(rootPassword, currentUser->password) == 0) {
+            if (strcmp(rootUsername, currentUser->username)==0 && strcmp(rootPassword, currentUser->password)==0)
+            {
                 printf("Successfully Authenticated as %s", currentUser->username);
                 //login successful
+                currentUser->isAuthenticated = 1; // Authenticate user.
             }
-            currentUser->isAuthenticated = 1; // Authenticate user.
-        } else {
+        }
+        else
+        {
             printf("You can perform the following actions: \n");
             printf("1. Ping test google.com\n");
-            printf("3. View the /tmp directory\n");
             printf("2. View /etc/passwd\n");
+            printf("3. View the /tmp directory\n");
             printf("4. Logout and exit\n");
-            scanf("%c", &userSelection);
             printf("5. Exit the program\n");
-            switch (userSelection) {
-                system("ping -c 4 google.com");
+            scanf("%c", &userSelection);
+            switch(userSelection)
+            {
                 case '1':
+                    system("ping -c 4 google.com");
                     break;
-                    system("cat /etc/passwd");
                 case '2':
+                    system("cat /etc/passwd");
                     break;
-                    system("ls /tmp");
                 case '3':
+                    system("ls /tmp");
                     break;
                 case '4':
                     printf("Are you sure you want to logout and exit the program? (Y/N): ");
-                    free(currentUser); // since it frees before log out is confirmed, we can deny logout and free again.
+                    getchar();
                     scanf("%c", &userSelection);
+                    free(currentUser); 
                     if (userSelection == 'n' || userSelection == 'N')
                     {
-
+                        break;
                     }
-                    if (userSelection == 'y' || userSelection == 'Y') {
-                        free(currentUser);
+                    if (userSelection == 'y' || userSelection == 'Y'){
                         printf("Logging out and exiting the program... ");
+                        exit(1);
                     }
                     break;
-                    exit(1);
                 case '5':
                     exit(1);
-                default:
                     break;
+                default:
                     printf("Selection not implemented\n");
+                    break;
             }
-            break;
         }
     }
 }
+
 
 void vulnerablePingUtility()
 {
@@ -253,24 +253,20 @@ int main(int argc, char **argv) {
                 vulnerableFunctionC(input_buffer + 2);
                 break;
             case '3':
-                printf("\n[*] %c: calling vulnerablePing\n", c);
-                vulnerablePing();
+                printf("\n[*] %c: calling vulnerableFunctionD\n", c);
+                vulnerableFunctionD();
                 break;
             case '4':
-                //calculate average of percentages
-                printf("\n[*] %c: calling vulnerableFormatString\n", c);
-                break;
-            case '5':
-                printf("\n[*] %c: calling vulnerableUseAfterFree\n", c);
-                vulnerableUseAfterFree();
-                break;
-            case '6':
                 printf("\n[*] %c: calling vulnerable ping utility\n", c);
                 vulnerablePingUtility();
                 break; 
-            case '7':
-                printf("\n[*] %c: calling vulnerableDoubleFree\n", c);
-                vulnerableDoubleFree();
+            case '5':
+                printf("\n[*] %c: calling vulnerableFunctionE\n", c);
+                vulnerableFunctionE();
+                break;
+            case '6':
+                printf("\n[*] %c: calling vulnerableFunctionF\n", c);
+                vulnerableFunctionF();
                 break;
             default:
                 printf("\n[!] Selection %c not implemented\n", c);
