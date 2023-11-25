@@ -331,7 +331,7 @@ int ping(int argc, char **argv) {
 
 
   // Get the destination address
-  // Make sure it is not NULL and it is not > 260 chars
+  // Make sure it is not NULL and it is not > 300 chars
   char* destination = argv[0];
   if (destination == NULL) {
     fprintf(stderr, "destination was not supplied");
