@@ -1,0 +1,44 @@
+Item.c: (in function ItemReadItems)
+Item.c:25:16: Operands of == have incompatible types (int, char): c == '\"'
+  A character constant is used as an int. Use +charintliteral to allow
+  character constants to be used as ints.  (This is safe since the actual type
+  of a char constant is int.)
+Item.c:29:21: Operands of == have incompatible types (int, char): c == '\n'
+Item.c:31:17: Index of possibly null pointer fileBuffer: fileBuffer
+  A possibly null pointer is dereferenced.  Value is either the result of a
+  function which may return null (in which case, code should check it is not
+  null), or a global, parameter or structure field declared with the null
+  qualifier. (Use -nullderef to inhibit warning)
+   Item.c:16:24: Storage fileBuffer may become null
+Item.c:34:21: Operands of == have incompatible types (int, char): c == '\r'
+Item.c:40:17: Index of possibly null pointer fileBuffer: fileBuffer
+   Item.c:16:24: Storage fileBuffer may become null
+Item.c:40:17: Assignment of int to char: fileBuffer[itemsRead] = c
+  To make char and int types equivalent, use +charint.
+Item.c:52:50: Possibly null storage token passed as non-null param:
+                 strcpy (..., token)
+  A possibly null pointer is passed as a parameter corresponding to a formal
+  parameter with no /*@null@*/ annotation.  If NULL may be used for this
+  parameter, add a /*@null@*/ annotation to the function parameter declaration.
+  (Use -nullpass to inhibit warning)
+   Item.c:51:21: Storage token may become null
+Item.c:55:9: Variable fileBuffer is dependent if loop is not taken, but
+                independent in while body.
+  The state of a variable is different depending on which branch is taken. This
+  means no annotation can sensibly be applied to the storage. (Use -branchstate
+  to inhibit warning)
+   Item.c:55:9: if loop is not taken:
+   Item.c:46:9: Storage fileBuffer becomes dependent
+   Item.c:55:9: in while body:
+   Item.c:51:13: Storage fileBuffer becomes owned (through alias token)
+Item.c:56:9: Return value (type int) ignored: fclose(pItemFile)
+  Result returned by function call is not used. If this is intended, can cast
+  result to (void) to eliminate message. (Use -retvalint to inhibit warning)
+Item.c:63:16: Possibly null storage pItemFile passed as non-null param:
+                 fclose (pItemFile)
+   Item.c:14:23: Storage pItemFile may become null
+Item.c:63:9: Return value (type int) ignored: fclose(pItemFile)
+Item.c:12:36: Parameter maxItems not used
+  A function parameter is not used in the body of the function. If the argument
+  is needed for type compatibility or future plans, use /*@unused@*/ in the
+  argument declaration. (Use -paramuse to inhibit warning)
