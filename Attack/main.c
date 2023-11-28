@@ -40,7 +40,8 @@ int GameInitialize(Game *pGame)
     pGame->numLocations = MAX_MAP_LOCATIONS; pGame->itemCount = MAX_ITEM_COUNT;
 
     LocationReadMap(pGame->map, MAX_MAP_LOCATIONS, MAP_FILE);
-    ItemReadItems(pGame->items, MAX_ITEM_COUNT, ITEM_FILE);
+    ItemReadItems(pGame->items, MAX_ITEM_COUNT, ITEM_FILE); // what happens if any of the functions fail
+    // There's no check for the ret value for these functions, perhaps we can abuse this?
     //Player is initialized to location 0
     PlayerInit(&pGame->player, 0);
 
@@ -72,7 +73,7 @@ bool PlayerHasItem(Player *pPlayer, int itemNumber)
 
 int main()
 {
-    char* playerInput = malloc(MAX_INPUT);
+    char* playerInput = malloc(MAX_INPUT); // playerInput is stored on the heap
 
     Game game;
     GameInitialize(&game);
@@ -96,8 +97,11 @@ int main()
     {   
         int i = 0;
 
-        gets(aline); // vulnerable function
-        
+        //gets(aline); // vulnerable function
+        fgets(aline, 1000, stdin); // I had to fix this in order to run it in my ide
+        // change this from 1000 to 24 whilst testing.
+
+        //searches for a newline in the aline buffer, then replaces it with a NULL char
         while(i < maxLine)
         {
             if(aline[i] != '\n')
@@ -128,7 +132,7 @@ int main()
         verb = strtok(aline, " ");
         noun = strtok(NULL, " ");
 
-        switch(verb[0])
+        switch(verb[0]) // checks the first character of the first string to get the "verb"
         {
             case 'n': // move north
             case 'N':
@@ -176,7 +180,7 @@ int main()
                 break;
             case 'g':
             case 'G': // get the item number
-                itemNumber = ItemGetItemNumber(game.items, MAX_ITEM_COUNT, noun);
+                itemNumber = ItemGetItemNumber(game.items, MAX_ITEM_COUNT, noun); // get the item number
                 if(LocationHasItem(&game.map[game.player.location], itemNumber))
                 {
                     PlayerAddItem(&game.player, itemNumber);

@@ -45,7 +45,7 @@ int LocationReadMap(Location map[], int maxLocations, char *filename)
             }
             else
             {
-                mapBuffer[counter] = c;
+                mapBuffer[counter] = c; //map buffer
                 ++counter;
             }
         }
