@@ -99,7 +99,7 @@ int main()
 
         //gets(aline); // vulnerable function
         fgets(aline, 1000, stdin); // I had to fix this in order to run it in my ide
-        // change this from 1000 to 24 whilst testing.
+        // changed this from 1000 to 24 whilst testing. It should be 24 to be secure.
 
         //searches for a newline in the aline buffer, then replaces it with a NULL char
         while(i < maxLine)
@@ -248,7 +248,7 @@ int main()
             case 5:
                 LocationAddItem(&game.map[5], 1);
                 break;
-            case 6: // whats up with this not having anything? No locaation here?
+            case 6: // whats up with this not having anything? No location here?
                 break;
             case 7:
                 LocationAddItem(&game.map[7], 0);

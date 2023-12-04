@@ -10,8 +10,7 @@ all: $(OBJECTS) lib main.c
 	gcc $(CFLAGS) $(OBJECTS) main.c -o $(EXECUTABLE)
 	ar rc adventure.a $(OBJECTS)
 
-lib: $(OBJECTS)
-#	gcc -shared
+lib: $(OBJECTS) #	gcc -shared
 
 slib: $(SHARED) slibrary
 	gcc -c -Wall -Werror -fpic $(OBJECTS)
