@@ -58,22 +58,34 @@ int LocationReadMap(Location map[], int maxLocations, char *filename)
 
     token = strtok(mapBuffer, ",");
 
-    while((token != NULL))
-        {
-            map[counter].north = atoi(token); // function will not report conversion errors...
-            token = strtok(NULL, ",");
-            map[counter].east = atoi(token);
-            token = strtok(NULL, ",");
-            map[counter].south = atoi(token);
-            token = strtok(NULL, ",");
-            map[counter].west = atoi(token);
-            token = strtok(NULL, ",");
-            strcpy(map[counter].name, token); //BoF?
-            token = strtok(NULL, ",");
-            strcpy(map[counter].description, token); //BoF?
-            token = strtok(NULL, ",");
-            ++counter;
+    while((token != NULL)){
+        map[counter].north = atoi(token); // function will not report conversion errors...
+        token = strtok(NULL, ",");
+        map[counter].east = atoi(token);
+        token = strtok(NULL, ",");
+        map[counter].south = atoi(token);
+        token = strtok(NULL, ",");
+        map[counter].west = atoi(token);
+        token = strtok(NULL, ",");
+
+        // Using strncpy to avoid buffer overflow
+        if(token != NULL) {
+            strncpy(map[counter].name, token, MAX_LOC_NAME_STRING - 1);
+            map[counter].name[MAX_LOC_NAME_STRING - 1] = '\0'; // Ensure null termination
         }
+
+        token = strtok(NULL, ",");
+
+        // Using strncpy to avoid buffer overflow
+        if(token != NULL) {
+            strncpy(map[counter].description, token, MAX_LOC_DESCRIPTION_STRING - 1);
+            map[counter].description[MAX_LOC_DESCRIPTION_STRING - 1] = '\0'; // Ensure null termination
+        }
+
+        token = strtok(NULL, ",");
+        ++counter;
+    }
+
     
     free(mapBuffer);
     fclose(pMapFile);
