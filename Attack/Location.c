@@ -50,8 +50,10 @@ int LocationReadMap(Location map[], int maxLocations, char *filename)
             }
         }
     }
-    else printf("There was a problem opening the map file.\n");
-
+    else{
+        printf("There was a problem opening the map file.\n");
+        return -1;
+    } 
     counter = 0;
 
     token = strtok(mapBuffer, ",");

@@ -39,7 +39,9 @@ int GameInitialize(Game *pGame)
 {
     pGame->numLocations = MAX_MAP_LOCATIONS; pGame->itemCount = MAX_ITEM_COUNT;
 
-    LocationReadMap(pGame->map, MAX_MAP_LOCATIONS, MAP_FILE);
+    if(LocationReadMap(pGame->map, MAX_MAP_LOCATIONS, MAP_FILE) == -1){
+        return -1;
+    }
     if(ItemReadItems(pGame->items, MAX_ITEM_COUNT, ITEM_FILE) < 0){
         return -1;
     } // what happens if any of the functions fail
