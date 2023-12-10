@@ -46,20 +46,39 @@ int ItemReadItems(Item items[],int maxItems, char *fileName)
         itemsRead = 0;
 
         token = strtok(fileBuffer, ","); // The token is the string in between the commas
-
-        while((token != NULL))
-        {
-            // what if items is null...?
+  // what if items is null...?
             // we can modify the names in the items to cause a buffer overflow.
             // The item name buffer is MAX_ITEM_NAME_STRING (25 bytes) long.
-            strcpy(items[itemsRead].name, token); // BoF?
-            //token could be null
+
+        while((token != NULL)){
+            // Ensure the token size does not exceed the buffer size for name
+            if(strlen(token) < MAX_ITEM_NAME_STRING)
+            {
+                strncpy(items[itemsRead].name, token, MAX_ITEM_NAME_STRING - 1);
+                items[itemsRead].name[MAX_ITEM_NAME_STRING - 1] = '\0'; // Null terminate
+            }
+            else
+            {
+                // Handle error for token size exceeding buffer size
+            }
+
             token = strtok(NULL, ",");
-            // another buffer overflow here.
-            strcpy(items[itemsRead].description, token); //BoF?
+            
+            // Ensure the token size does not exceed the buffer size for description
+            if(strlen(token) < MAX_ITEM_DESCRIPTION_STRING)
+            {
+                strncpy(items[itemsRead].description, token, MAX_ITEM_DESCRIPTION_STRING - 1);
+                items[itemsRead].description[MAX_ITEM_DESCRIPTION_STRING - 1] = '\0'; // Null terminate
+            }
+            else
+            {
+                // Handle error for token size exceeding buffer size
+            }
+
             token = strtok(NULL, ",");
             ++itemsRead;
         }
+
         fclose(pItemFile);
         free(fileBuffer);
         return itemsRead;

@@ -40,7 +40,9 @@ int GameInitialize(Game *pGame)
     pGame->numLocations = MAX_MAP_LOCATIONS; pGame->itemCount = MAX_ITEM_COUNT;
 
     LocationReadMap(pGame->map, MAX_MAP_LOCATIONS, MAP_FILE);
-    ItemReadItems(pGame->items, MAX_ITEM_COUNT, ITEM_FILE); // what happens if any of the functions fail
+    if(ItemReadItems(pGame->items, MAX_ITEM_COUNT, ITEM_FILE) < 0){
+        return -1;
+    } // what happens if any of the functions fail
     // There's no check for the ret value for these functions, perhaps we can abuse this?
     //Player is initialized to location 0
     PlayerInit(&pGame->player, 0);
