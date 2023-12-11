@@ -102,8 +102,7 @@ int main()
         int i = 0;
 
         //gets(aline); // vulnerable function
-        fgets(aline, 1000, stdin); // I had to fix this in order to run it in my ide
-        // changed this from 1000 to 24 whilst testing. It should be 24 to be secure.
+        fgets(aline, MAX_INPUT, stdin); // Heap Based Buffer Overflow Location
 
         //searches for a newline in the aline buffer, then replaces it with a NULL char
         while(i < maxLine)
@@ -121,7 +120,7 @@ int main()
         }
         
         printf("You said...");
-        printf("%s", aline); // format string vuln
+        printf("%s", aline); // Format Strings Vuln Location
         printf("\n");
         
         return i;
