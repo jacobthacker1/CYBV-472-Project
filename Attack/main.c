@@ -232,7 +232,7 @@ int main()
 
     for(int i = 0; i < MAX_MAP_LOCATIONS; i++)
     {
-        switch (i) // no default case!
+        switch (i)
         {
             case 0:
                 break;
@@ -258,6 +258,8 @@ int main()
                 break;
             case 8: // no location here either.
                 break;
+            default:
+                break; // Missing Default Case Location
         }
     }
 
