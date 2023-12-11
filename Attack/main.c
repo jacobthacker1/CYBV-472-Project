@@ -121,7 +121,7 @@ int main()
         }
         
         printf("You said...");
-        printf(aline); // format string vuln
+        printf("%s", aline); // format string vuln
         printf("\n");
         
         return i;
