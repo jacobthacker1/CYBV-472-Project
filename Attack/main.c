@@ -128,9 +128,16 @@ int main()
 
     void ParseUserInput(char *aline)
     {
-        char *verb;
-        char *noun;
+        char *verb = NULL;
+        char *noun = NULL;
         int itemNumber = -1;
+
+        // Check for a valid verb entry
+        if (verb == NULL)
+        {
+            printf("\nYou did not enter a valid selection. Try again!\n");
+            return;
+        }  
 
         verb = strtok(aline, " ");
         noun = strtok(NULL, " ");
@@ -183,6 +190,12 @@ int main()
                 break;
             case 'g':
             case 'G': // get the item number
+                // Check for a valid noun entry
+                if (noun == NULL)                
+                {
+                    printf("\nYou did not enter a valid item. Try again!\n");
+                    break;
+                }
                 itemNumber = ItemGetItemNumber(game.items, MAX_ITEM_COUNT, noun); // get the item number
                 if(LocationHasItem(&game.map[game.player.location], itemNumber))
                 {
@@ -197,6 +210,12 @@ int main()
                 break;
             case 'd':
             case 'D': // drop the item number
+                // Check for a valid noun entry
+                if (noun == NULL)                
+                {
+                    printf("\nYou did not enter a valid item. Try again!\n");
+                    break;
+                }                
                 itemNumber = ItemGetItemNumber(game.items, MAX_ITEM_COUNT, noun);
                 if(PlayerHasItem(&game.player, itemNumber))
                 {
@@ -209,7 +228,13 @@ int main()
                 }
                 break;            
             case 'i':
-            case 'I': // view the item number?
+            case 'I': // view the item number
+                // Check for a valid noun entry
+                if (noun == NULL)                
+                {
+                    printf("\nYou did not enter a valid item. Try again!\n");
+                    break;
+                }                
                 itemNumber = ItemGetItemNumber(game.items, MAX_ITEM_COUNT, noun);
                 if(LocationHasItem(&game.map[game.player.location], itemNumber))
                 {
